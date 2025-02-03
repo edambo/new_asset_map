@@ -1,0 +1,17 @@
+{
+  "hash": "f9dc365940112b974a29c1d23d3c2f73",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: Dashboard\nformat: \n  dashboard\norientation: rows\nscrolling: true \n---\n\n\n\n\n\n\n\n\n\n\n::: {.card title=\"Placeholder\"}\nPlaceholder\n:::\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](demographics_dash_files/figure-html/unnamed-chunk-5-1.png){width=50%}\n:::\n:::\n\n::: {.card title=\"Placeholder\"}\nPlaceholder\n:::\n",
+    "supporting": [
+      "demographics_dash_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,72 @@
+---
+title: Dashboard
+format: 
+  dashboard
+orientation: rows
+scrolling: true 
+---
+
+```{r, include = FALSE}
+library(plotly)
+library(here)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(fastDummies, include.only = "dummy_cols")
+library(tidyr, include.only = "pivot_longer")
+# library(stringr, include.only = "str_to_title")
+```
+
+```{r, include=FALSE}
+dem_data <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "demographics") 
+```
+
+```{r, include=FALSE}
+# Prepare the data for plots
+dem_data <- dem_data %>%
+  mutate(
+    # Replace "NA" demographic category with "Missing"
+    demographic = case_when(
+      is.na(demographic)      ~ "Missing",
+      TRUE                    ~ demographic
+    ),
+    # Create a new demographic column that combines some of the demographics 
+    demographic_co = case_when(
+      demographic == "Average age"     ~ "Age",
+      demographic == "Mean Age"        ~ "Age",
+      demographic == "Median age"        ~ "Age",
+      demographic == "Gender identity" ~ "Gender",
+      TRUE                             ~ demographic
+    )
+  )
+```
+
+```{r, include = FALSE}
+demographic <- dem_data %>% select(program, demographic_co) %>% distinct()
+
+total <- dem_data %>% select(program) %>% distinct() %>% nrow()
+
+demographic_sum <- table(demographic$demographic_co) %>% as.data.frame() %>%
+  rename("category" = Var1,
+         "yes" = Freq) %>%
+  mutate(
+    no = total - yes
+  ) %>% pivot_longer(c(yes, no), names_to = "have_category", values_to = "count")
+```
+
+::: {.card title="Placeholder"}
+Placeholder
+:::
+
+```{r, echo = FALSE, out.width="50%"}
+ggplot(demographic_sum, aes(x = category, y = count, fill = have_category)) +
+  geom_bar(stat = "identity", color = "grey") +
+  scale_fill_manual("legend", labels = c("Program demographics do not include category", "Program demographics include category"), values = c("no" = "transparent", "yes" = "#00FFFF"))+
+  geom_text(aes(label = count), size = 2, position = position_stack(vjust = 0.5)) +
+  theme_classic() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        axis.title.x=element_blank())
+```
+::: {.card title="Placeholder"}
+Placeholder
+:::

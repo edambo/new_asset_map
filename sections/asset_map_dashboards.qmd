@@ -1,0 +1,601 @@
+---
+format: 
+  dashboard
+orientation: rows
+scrolling: true 
+---
+
+```{r, include = FALSE}
+# Load Libraries
+library(plotly)
+library(here)
+library(dplyr)
+library(ggplot2)
+library(DT)
+library(crosstalk)
+library(readxl)
+library(tidyr)
+library(leaflet)
+library(sf)
+```
+
+<!-- Load data -->
+```{r, include=FALSE}
+path <- here::here("data", "prepped_data.RData")
+load(path)
+```
+
+<!-- Function for creating the sub-category plots -->
+
+```{r, include=FALSE}
+sub_cat_plot <- function(df, shared_env, title, fill_color){
+  max_count <- max(df$count_by_sub)
+  # Set end value of y-axis range
+  r <- max_count + 6
+  
+  # Conditionally set the label nudge distance
+  if(max_count< 11){
+    nudge <- 0.2
+  }
+  else {
+    nudge <- 1
+  }
+  gg_plot <- ggplot(shared_env, aes(y = sub_category,
+                                 text = paste(sub_cat_text)
+                                 )) +
+    geom_bar(fill = fill_color) + 
+    geom_text(aes(label = ..count..), stat = "count", 
+              nudge_x = nudge, color = fill_color) +
+    scale_fill_discrete(drop=FALSE) +
+    scale_y_discrete(drop = FALSE) + theme_classic() +
+    theme(axis.ticks.x = element_blank(),
+          axis.line = element_blank())
+  
+  ggplotly(gg_plot, tooltip = c("text")) %>%
+    layout(hoverlabel = list(align="left",
+                             bgcolor = fill_color),
+           title = title,
+           margin = list(t = 50), 
+           xaxis = list(showticklabels = FALSE,
+                        title = FALSE,
+                        range = list(0, r),
+                        fixedrange = TRUE
+                        ),
+           yaxis = list(showticklabels = TRUE,
+                       title = FALSE,
+                       fixedrange = TRUE),
+           showlegend = F) %>%
+    style(hoverinfo = 'none', traces = c(1),
+          textposition = "none") %>%
+    highlight(on = "plotly_click", off = "plotly_doubleclick")
+
+}
+```
+
+<!-- Intercept Plot Function -->
+
+```{r, include=FALSE}
+intercept_plot <- function(df, shared_env, fill_color){
+  r <- df %>% as.data.frame() %>% select(count_by_int) %>% max() + 6
+  
+  gg_plot <- ggplot(shared_env, aes(y = intercept,
+                                 text = paste(int_cat_text)
+                                 )) +
+    geom_bar(color = fill_color, fill = "white") + 
+    geom_text(aes(label = after_stat(count)), stat = "count", 
+              nudge_x = 1, color = "#545352") +
+    scale_y_discrete(drop = FALSE) + theme_classic() +
+    theme(axis.ticks.x = element_blank(),
+          axis.line = element_blank())
+  
+  
+  ggplotly(gg_plot, tooltip = c("text")) %>%
+    layout(hoverlabel = list(align="left",
+                             bgcolor = fill_color),
+           margin = list(t = 50), 
+           xaxis = list(showticklabels = FALSE,
+                        title = FALSE,
+                        range = list(0, r),
+                        fixedrange = TRUE
+                        ),
+           yaxis = list(showticklabels = TRUE,
+                       title = FALSE,
+                       fixedrange = TRUE),
+           showlegend = F) %>%
+    style(hoverinfo = 'none', traces = c(1),
+          textposition = "none") %>%
+    highlight(on = "plotly_click", off = "plotly_doubleclick") 
+}               
+```
+
+<!-- Function for creating downloadable DT tables -->
+
+```{r, include=FALSE}
+dtable <- function(shared_env){
+    dt_table <- shared_env %>% datatable(
+      colnames = c("Program", "Agency",  "Need Category", 
+                   "Count by Need category", "Sub Category", "Count by Sub-category",
+                   "Intercept", "Intercept Code", "Count by Intercept", 
+                   "Count by Intercept (by Need)", "Zipcode", "Count by Zipcode",
+                   "Count by Zip Code (by Need)", "Longitude", "Latitude", 
+                   "Geometry", "Text Label", "Text Label (by Need)"),
+      extensions = "Buttons",
+      options = list(
+        columnDefs = list(list(visible = FALSE, targets = c(4,9,12,14,15,16,17,18))),
+        buttons = c("csv", "excel"),
+        text = "Download",
+        # paging = TRUE,
+        # lengthMenu = c(5, 10, 25),
+        # pageLength = 10,
+        dom = "Bfrtip",
+        scrollX = TRUE
+      )
+    )
+  dt_table 
+}
+```
+
+
+# All {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_all <- SharedData$new(all, key = ~program)
+```
+
+## Row 
+
+### Column{.tabset}
+```{r, echo = FALSE}
+#| title: By Need Category
+r <- max(all$count_by_main) + 6
+
+all_plot <- ggplot(shared_data_all, aes(y = main_category,
+                               text = paste(main_cat_text)
+                               )) +
+  geom_bar(color = "#003f5c", fill = "white") + 
+  geom_text(aes(label = after_stat(count)), stat = "count", 
+            nudge_x = 1, color = "#545352") +
+  # scale_fill_discrete(drop=FALSE) +
+  scale_y_discrete(drop = FALSE) + theme_classic() +
+  theme(axis.ticks.x = element_blank(),
+        axis.line = element_blank())
+
+
+
+
+ggplotly(all_plot, tooltip = c("text")) %>%
+  layout(hoverlabel = list(align="left",
+                           bgcolor = "#003f5c"),
+         title = "Asset Map Main Categories",
+         margin = list(t = 50), 
+         xaxis = list(showticklabels = FALSE,
+                      title = FALSE,
+                      range = list(0, r),
+                      fixedrange = TRUE
+                      ),
+         yaxis = list(showticklabels = TRUE,
+                     title = FALSE,
+                     fixedrange = TRUE),
+         showlegend = F) %>%
+  style(hoverinfo = 'none', traces = c(1),
+        textposition = "none") %>%
+  highlight(on = "plotly_click", off = "plotly_doubleclick")
+
+```
+
+```{r, echo = FALSE}
+#| title: By Intercept
+intercept_plot(all, shared_data_all, "#ffa600")               
+```
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_all, ~zipcode)
+  )
+
+)
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the all need categories.
+
+Follow this [link](definitions.html) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zipcode, sub-category, or intercept category and downloaded in either CSV or Excel format.
+:::
+
+## Row
+```{r, echo = FALSE}
+#| title: Data
+dt_table <- shared_data_all %>%
+  datatable(
+    colnames = c("Program", "Agency",  "Need Category", 
+                 "Count by Need category", "Sub Category", 
+                 "Intercept", "Intercept Code", "Count by Intercept", 
+                 "Count by Intercept (by Need)", "Zipcode", "Count by Zipcode",
+                 "Count by Zip Code (by Need)", "Longitude", "Latitude", 
+                 "Geometry", "Text Label", "Text Label (by Need)"),
+    extensions = "Buttons",
+    options = list(
+      columnDefs = list(list(visible = FALSE, targets = c(9,12,13,14,15,16,17))),
+      buttons = c("csv", "excel"),
+      text = "Download",
+      # paging = TRUE,
+      # lengthMenu = c(5, 10, 25),
+      # pageLength = 10,
+      dom = "Bfrtip",
+      scrollX = TRUE
+    )
+  )
+dt_table
+```
+
+# Behavioral Health Services {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_bhs <- SharedData$new(bhs, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(bhs, shared_data_bhs, "Behavioral Health Services", "#003f5c")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(bhs, shared_data_bhs, "#003f5c")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_bhs, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the behavioral health need category.
+
+Follow this [link](definitions.html#behavioral-health-services) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_bhs)
+```
+# Substance Use Treatment {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_sut <- SharedData$new(sut, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(sut, shared_data_sut, "Substance Use Treatment", "#2c4875")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(sut, shared_data_sut, "#2c4875")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_sut, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the substance use treatment need category.
+
+Follow this [link](definitions.html#substance-use-treatment) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_sut)
+```
+
+# Housing Assistance {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_ha <- SharedData$new(ha, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(ha, shared_data_ha, "Housing Assistance", "#58508d")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(ha, shared_data_ha, "#58508d")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_ha, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the housing assistance need category.
+
+Follow this [link](definitions.html#housing-assistance) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_ha)
+```
+# Healthcare Services {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_hcs <- SharedData$new(hcs, key = ~program)
+```
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the healthcare services need category.
+
+Follow this [link](definitions.html#healthcare-services) to see the definitions for the categories used in classifying the data.
+
+There is currently no data to display for this need category.
+:::
+
+# Community Policing Initiatives {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_cpi <- SharedData$new(cpi, key = ~program)
+```
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the community policing intiative need category.
+
+Follow this [link](definitions.html#community-policing-initiatives) to see the definitions for the categories used in classifying the data.
+
+There is currently no data to display for this need category.
+:::
+
+# Legal Aid & Advocacy {orientation="rows" scrolling="true"}
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_laa <- SharedData$new(laa, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(laa, shared_data_laa, "Legal Aid & Advocacy", "#de5a79")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(laa, shared_data_laa, "#de5a79")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_laa, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the legal aid & advocacy need category.
+
+Follow this [link](definitions.html#legal-aid-and-advocacy) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_laa)
+```
+
+# Legal Diversion Supports {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_lds <- SharedData$new(lds, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(lds, shared_data_lds, "Legal Diversion Supports", "#ff6361")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(lds, shared_data_lds, "#ff6361")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_lds, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the legal diversion supports need category.
+
+Follow this [link](definitions.html#legal-diversion-supports) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_lds)
+```
+
+# Re-Entry Support {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_res <- SharedData$new(res, key = ~program)
+```
+
+## Row 
+### Column{.tabset}
+```{r, echo=FALSE}
+#| title: By Sub-category
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+sub_cat_plot(res, shared_data_res, "Re-Entry Support", "#ff8531")
+```
+
+```{r}
+#| title: By Intercept
+intercept_plot(res, shared_data_res, "#ff8531")
+```
+
+
+```{r, echo = FALSE}
+#| title: By Zipcode
+
+bscols(widths = c(12),
+  list(
+    filter_select("zip", "Zipcodes", shared_data_res, ~zipcode)
+  )
+
+)
+                
+```
+
+### Column
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the re-entry support need category.
+
+Follow this [link](definitions.html#reentry-support) to see the definitions for the categories used in classifying the data.
+
+The data can be filtered by zip code, sub-category, or intercept category.
+
+Click a bar to select a category and double-click outside the bar to deselect.
+
+Filtered or unfiltered data can be downloaded in either CSV or Excel format
+:::
+
+## Row
+
+```{r, echo = FALSE}
+#| title: Data
+dtable(shared_data_res)
+```
+
+# Community Engagement & Awareness {orientation="rows" scrolling="true"}
+
+```{r, echo=FALSE}
+# For crosstalk
+shared_data_cea <- SharedData$new(cea, key = ~program)
+```
+
+::: {.card title="Notes for Dashboard Use"}
+This dashboard visualizes data for the community engagement and awareness need category.
+
+Follow this [link](definitions.html#community-engagement-and-awareness) to see the definitions for the categories used in classifying the data.
+
+There is currently no data to display for this need category.
+:::

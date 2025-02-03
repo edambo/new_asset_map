@@ -1,0 +1,215 @@
+---
+toc: true
+---
+This page contains ChatGPT-generated definitions for the categories used in categorizing the asset map data.
+
+## Behavioral Health Services
+Behavioral Health Services encompass a range of programs and facilities designed to support individuals experiencing mental health issues and behavioral disorders. These services aim to improve mental well-being, manage psychiatric conditions, and offer support for behavioral health crises.
+
+#### Outpatient
+  - Counseling and Therapy Services: Professional mental health services provided in a non-residential setting, including individual, group, and family therapy to address various mental health issues.
+
+  - Support Groups: Peer-led or professionally facilitated groups that provide emotional support and shared experiences for individuals dealing with similar mental health challenges.
+
+  - Assisted Outpatient Therapy or Assertive Community Treatment Programs: Intensive, community-based services designed for individuals with severe mental illness who need help with daily living and treatment adherence.
+
+#### Inpatient Facilities
+  - Crisis Stabilization Units: Short-term residential units that provide immediate, intensive care for individuals experiencing acute psychiatric crises.
+
+  - Inpatient Psychiatric Hospitals: Facilities offering comprehensive psychiatric care for individuals requiring extended hospitalization due to severe mental health conditions.
+
+#### Residential Facilities
+  - Crisis Respite: Short-term, temporary housing providing a safe space for individuals experiencing a mental health crisis to stabilize and receive support.
+
+  - Crisis Residential: Longer-term residential options than crisis respite, offering ongoing support and treatment for individuals in crisis.
+
+#### Crisis Intervention Programs
+  - Services designed to provide immediate assistance and intervention for individuals experiencing a mental health crisis, including emergency response teams and hotlines.
+   
+#### Emergency
+
+  - Seton Yellow Pod: A specialized emergency psychiatric unit within the Seton healthcare system for acute mental health crises.
+
+  - Integral Care PES: The Psychiatric Emergency Services unit providing urgent mental health care for individuals in crisis.
+  
+#### Programs while Incarcerated
+
+  - Assessments: Evaluation services conducted within correctional facilities to identify mental health needs and risks.
+
+  - Evaluations: Comprehensive assessments to determine the severity and type of mental health conditions in incarcerated individuals.
+
+  - Treatment:
+
+  - Medication: Administration of psychiatric medications as part of the treatment plan.
+
+  - Release Planning: Assistance with planning for mental health care and support services upon release from incarceration.
+
+  - Connection to Housing/Support: Coordinating access to housing and community support services post-release.
+
+## Substance Use Treatment
+Substance Use Treatment refers to a variety of interventions and services aimed at helping individuals address and overcome addiction to drugs or alcohol. This includes treatment programs, support groups, and harm reduction strategies to assist individuals in achieving and maintaining sobriety.
+
+#### Outpatient Treatment Programs
+  - Programs providing treatment for substance use disorders without requiring overnight stays, including counseling, therapy, and support.
+
+#### Inpatient Rehabilitation Centers
+  - Facilities where individuals receive intensive treatment for substance use disorders, typically involving detoxification and therapeutic interventions on a residential basis.
+
+#### Harm Reduction Services
+  - Services aimed at reducing the negative health effects associated with substance use, including needle exchange programs and supervised consumption spaces.
+
+#### Support Groups 
+(e.g., Alcoholics Anonymous, Narcotics Anonymous)
+
+  - Peer-led groups offering support and accountability for individuals recovering from substance use disorders through shared experiences and group meetings.
+
+## Housing Assistance
+Housing Assistance involves programs and services that provide support to individuals and families in securing and maintaining stable housing. This includes temporary and long-term housing solutions, emergency shelters, and supportive housing options to address homelessness and housing instability.
+
+#### Transitional Housing Programs
+  - Temporary housing designed to assist individuals in transitioning from homelessness or unstable living conditions to permanent housing.
+
+#### Boarding Homes
+
+  - Residential facilities offering long-term housing with supportive services for individuals who need assistance with daily living.
+
+#### Emergency Homeless Shelters
+
+  - Short-term accommodations providing immediate relief and support for individuals experiencing homelessness.
+
+#### Rapid Rehousing Programs
+
+  - Programs focused on quickly providing permanent housing and supportive services to individuals and families who are homeless.
+
+#### Supportive Housing Programs
+
+  - Long-term housing solutions that include additional support services like case management and social services to help individuals maintain stability.
+
+#### County-Funded “Affordable Housing” Programs
+
+  - Housing programs subsidized by local government to provide affordable housing options for low-income residents.
+
+#### Other Housing Programs
+
+  - e.g., Community First Village: Innovative housing solutions offering supportive and community-oriented living arrangements for individuals experiencing homelessness.
+
+## Healthcare Services
+Healthcare Services include a range of medical and health-related programs aimed at promoting overall health, preventing illness, and treating various health conditions. This category covers primary care clinics, hospitals, health education programs, and access to medical treatments and medications.
+
+#### Primary Healthcare Clinics
+
+  - Medical facilities offering comprehensive health services, including routine check-ups, preventive care, and treatment of common illnesses and injuries.
+
+#### Inpatient Hospitals
+
+  - Facilities providing comprehensive medical care, including emergency services, surgeries, and extended hospital stays.
+
+#### Health Education Programs
+
+  - Initiatives aimed at improving public knowledge about health practices, disease prevention, and healthy lifestyles.
+
+#### Access to Medication and Medical Treatment
+
+  - Services ensuring individuals have access to necessary medications and treatments, including prescription assistance programs and medical treatment clinics.
+
+## Community Policing Initiatives
+Community Policing Initiatives involve strategies and programs aimed at building positive relationships between law enforcement and the community. These initiatives focus on collaboration, trust-building, and community engagement to improve public safety and strengthen community relations.
+
+#### Programs that Build Positive Relationships Between Law Enforcement and the Community
+
+  - Initiatives aimed at fostering trust and cooperation between police officers and community members through engagement and collaborative efforts.
+
+#### Community Policing Training for Law Enforcement Officers
+
+  - Training programs designed to educate officers on community-oriented policing practices and strategies to improve interactions with the public.
+
+## Legal Aid and Advocacy
+Legal Aid and Advocacy encompass services that offer legal support and representation to individuals who cannot afford private attorneys, as well as organizations that advocate for legal and criminal justice reform. These services ensure access to justice and address legal issues that affect individuals' rights and well-being.
+
+#### Public Defenders
+
+  - Legal professionals appointed to represent individuals who cannot afford private legal counsel in criminal cases.
+
+#### Legal Aid Organizations
+
+  - Non-profit entities providing free or low-cost legal assistance to individuals in need, focusing on issues like housing, family law, and consumer protection.
+
+#### Advocacy Groups Working on Criminal Justice Reform
+
+  - Organizations dedicated to improving and reforming the criminal justice system, including policy advocacy, legal reform, and public awareness.
+
+## Legal Diversion Supports
+Legal Diversion Supports are services and programs that offer alternatives to traditional criminal justice processes for individuals facing legal issues. These may include diversion programs, pretrial supervision, risk assessments, and specialty courts designed to address underlying issues and reduce incarceration.
+
+#### Pretrial Diversion Programs
+
+  - Programs designed to offer alternative solutions to incarceration for individuals facing criminal charges, often including treatment or rehabilitation.
+
+#### Pretrial Supervision Services
+
+  - Services providing oversight and support for individuals awaiting trial, including monitoring and compliance assistance.
+
+#### Risk Assessment Programs
+
+  - Programs evaluating individuals’ risk levels to inform decisions about pretrial release or diversion.
+
+#### Specialty Courts
+
+  - Courts focused on specific types of cases, such as drug courts or mental health courts, offering specialized programs and services to address underlying issues.
+
+## Reentry Support
+Reentry Support refers to programs and services designed to assist individuals transitioning from incarceration back into society. This includes support in areas such as employment, housing, education, and social integration to help individuals successfully reintegrate and lead productive lives.
+
+#### Reentry Programs and Support Services
+
+  - Programs designed to help individuals transition from incarceration back into society, offering support in areas like employment, housing, and social integration.
+
+#### Employment and Vocational Programs
+
+  - Job Training Programs: Educational and practical training to prepare individuals for the workforce.
+
+  - Vocational Rehabilitation Services: Services to help individuals with disabilities or other barriers to employment achieve their vocational goals.
+
+  - Supported Employment Opportunities: Jobs with additional support and accommodations to help individuals succeed in the workforce.
+
+#### Housing Assistance for Individuals Reentering Society
+
+  - Support services to help individuals secure stable housing after release from incarceration.
+
+#### Education and Skill Development
+
+  - Adult Education Programs: Educational opportunities for adults to achieve literacy, GED, or other academic goals.
+
+  - Skill-Building Workshops: Sessions focused on developing specific skills relevant to employment or daily living.
+
+  - Educational Resources within Correctional Facilities: Educational programs and materials available to incarcerated individuals to support their learning and development.
+
+#### Family and Social Support
+
+  - Family Counseling Services: Therapy and counseling aimed at improving family dynamics and supporting family members affected by incarceration.
+
+  - Supportive Social Networks: Community groups and connections providing emotional and social support.
+
+  - Childcare and Family Support Programs: Services providing childcare and family support to help individuals balance family responsibilities with reentry efforts.
+
+#### Transportation Services
+
+  - Public Transportation Options: Available public transit services including buses, trains, and other forms of communal transport.
+
+  - Transportation Assistance Programs: Services offering support for individuals needing help with transportation to access essential services.
+  
+## Community Engagement and Awareness
+Community Engagement and Awareness involves efforts to actively involve community members in local issues and raise awareness about available resources and services. This includes organizing forums, outreach programs, and collaborating with community leaders to foster informed and active community participation.
+
+#### Community Forums and Education Sessions
+
+  - Public meetings and educational events aimed at discussing community issues and raising awareness about available resources.
+
+#### Outreach Programs to Raise Awareness About Available Resources
+
+  - Initiatives designed to inform the community about available services and support through targeted outreach efforts.
+
+#### Collaboration with Community Leaders and Organizations
+
+  - Partnerships between service providers and community leaders to enhance resource availability and effectiveness.
+  

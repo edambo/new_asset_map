@@ -1,0 +1,208 @@
+```{r, include = FALSE}
+# Libraries
+library(png) # read png image
+library(RCurl) # read png files
+library(plotly)
+library(htmlwidgets) # to use the 'onRender' function
+library(here)
+library(dplyr)
+library(ggplot2)
+```
+
+The Innovative Justice and Program Analysis Department created this resource map to help professionals, programs and other members of the community identify resources available for support and collaboration, along with resources needed based on gaps in the community.
+
+Individuals looking for specific assistance should call 211 to be quickly referred to the appropriate service.
+
+# Select a Need Category
+
+```{r, echo = FALSE}
+# Generate the x and y co-ordinates for 9 points along circumference of a circle
+
+# Given that p is a number between 1 and 9
+# and t = 2pi/n *p
+# and x = rcos(t)+ xc
+# and y = rsin(t)+ yc
+
+# radius
+r <- 700
+
+# co-ordinates of circle center
+xc <- 900
+yc <- 900
+
+n <- 9
+tpi <- 2*pi
+
+# Generate points
+pts_circle <- t(sapply(1:n,function(p)c(
+  x_ax = r*cos((tpi/n)*p) + xc, 
+  y_ax = r*sin((tpi/n)*p) + yc
+  )
+  )
+  ) %>% as.data.frame()
+```
+
+
+```{r, echo = FALSE}
+# coolors palette:
+# <https://colorkit.co/color-palette-generator/003f5c-2c4875-58508d-8a508f-bc5090-de5a79-ff6361-ff8531-ffa600/>
+
+# Create data frame for map
+# categories
+cat <- c("Behavioral\nHealth\nServices", "Substance Use\nTreatment", "Housing\nAssistance", "Healthcare\nServices", 
+         "Community\n Policing\nInitiatives", 
+         "Legal Aid &\nAdvocacy", "Legal Diversion\nSupports", "Reentry\n Support", "Community\nEngagement &\nAwareness" )
+
+cols <- c("#003f5c",  "#2c4875", "#58508d", "#8a508f", "#bc5090", "#de5a79", "#ff6361", "#ff8531", "#ffa600")
+# Urls
+urls <- c("sections/asset_map_dashboards.html#behavioral-health-services",
+          "sections/asset_map_dashboards.html#substance-use-treatment", 
+          "sections/asset_map_dashboards.html#housing-assistance", 
+          "sections/asset_map_dashboards.html#healthcare-services", 
+          "sections/asset_map_dashboards.html#community-policing-initiatives",
+          "sections/asset_map_dashboards.html#legal-aid-advocacy", 
+          "sections/asset_map_dashboards.html#legal-diversion-supports", 
+          "sections/asset_map_dashboards.html#re-entry-support", 
+          "sections/asset_map_dashboards.html#community-engagement-awareness")
+
+a_map <- data.frame(pts_circle, cols, cat, urls)
+```
+
+```{r, echo = FALSE}
+# Add values for circle co-ordinates and colors to the data frame
+circle_size <- 175
+
+a_map <- a_map %>% 
+  mutate(
+    x0 = x_ax - circle_size,
+    x1 = x_ax + circle_size,
+    y0 = y_ax - circle_size,
+    y1 = y_ax + circle_size, 
+    x0_d = x0 - 0.75,
+    x1_d = x1 - 0.75,
+    y0_d = y0 - 1,
+    y1_d = y1 - 1,
+  )
+
+```
+
+```{r, echo = FALSE}
+# add values for circles to list
+large_list <- list()
+large_list <- by(a_map, seq_len(nrow(a_map)), function(r){
+  x_0 <- as.numeric(r["x0"])
+  x_1 <- as.numeric(r["x1"])
+  y_0 <- as.numeric(r["y0"])
+  y_1 <- as.numeric(r["y1"])
+  co <- as.character(r["cols"])
+  
+s_list <- list(type = 'circle',
+               xref = 'x', x0 = x_0, x1 = x_1,
+               yref = 'y', y0 = y_0, y1 = y_1,
+               fillcolor = co, line = list(color = co),
+               opacity = 1,
+               layer="below")
+large_list <- append(large_list, s_list)
+
+}
+  )
+
+shape_list <- unname(large_list)
+```
+
+```{r, include = FALSE}
+# Load background image
+back_img <- here("graphics", "asset_map_bg.png")
+
+img_txt <- RCurl::base64Encode(readBin(back_img, "raw", file.info(back_img)[1, "size"]), "txt")
+```
+
+
+```{r, fig.align = 'center', echo = FALSE, warning = FALSE}
+#| class-output: visual
+#| height: 90%
+#| padding: 0px
+
+m <- list(
+  l = 0,
+  r = 0,
+  b = 0,
+  t = 0,
+  pad = 0
+)
+
+p <- a_map %>% highlight_key(~y_ax) %>% plot_ly(type = "scatter", mode = "markers+text",
+             text = ~cat, textposition = "middle center",
+              marker = list(
+                color = 'black',
+                symbol = "circle",
+                size = 125,
+                opacity = 0.1),
+             textfont = list(color = '#fff', size = 13),
+             x = ~ x_ax, y = ~y_ax,
+             customdata = ~ urls,
+             width = 650,
+             height = 650
+             ) %>%
+  # Remove hover info
+  style(hoverinfo = 'none') %>%
+
+  # Highlight
+  highlight(on = 'plotly_hover', off = NULL,
+           opacityDim = getOption("opacityDim", 1),
+           color = "white",
+           selected = attrs_selected(mode = "markers", opacity = 1)
+           ) %>%
+
+    # Layout
+  layout(xaxis = list(zerolinecolor = 'transparent',
+                      zerolinewidth = 2,
+                      gridcolor = 'ffff',
+                      range = list(0, 1800), showgrid = F,
+                      showticklabels = FALSE,
+                      title = FALSE,
+                      fixedrange = TRUE
+                      ),
+         yaxis = list(
+                     zerolinecolor = 'transparent',
+                     zerolinewidth = 2,
+                     gridcolor = 'ffff',
+                     range = list(0, 1800), showgrid = F,
+                     showticklabels = FALSE,
+                     title = FALSE,
+                     fixedrange = TRUE),
+         # Set margin
+         margin = m,
+         # add shapes
+         shapes = shape_list,
+         # Add background
+        images = list(
+          list(
+            source =  paste('data:image/png;base64', img_txt, sep=','),
+            xref = "x",
+            yref = "y",
+            x = 0,
+            y = 1850,
+            sizex = 1850,
+            sizey = 1800,
+            sizing = "stretch",
+            opacity = 1,
+            layer = "above"
+      )
+    ),
+    showlegend = F
+         )
+# Disable modebar
+p <- config(p, displayModeBar = FALSE)
+
+js <- "
+function(el, x) {
+  el.on('plotly_click', function(d) {
+    var point = d.points[0];
+    var url = point.data.customdata[point.pointIndex];
+    window.open(url, target = '_self');
+  })
+}"
+
+p %>% onRender(js)
+```

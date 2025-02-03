@@ -1,0 +1,73 @@
+/*-- scss:rules --*/
+
+/*Make the plot fill the entire container and remove scroll bar 
+.cell-output-display.html-fill-item.html-fill-container {
+  background-color: transparent;
+  margin: auto;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather');
+
+/*Hide some items from the page navigation bar
+a#tab-all.nav-link {
+  display: none !important;
+} */
+
+
+/*Make cursor default arrow 
+rect.nsewdrag.drag.cursor-pointer {
+  cursor: default;
+} */
+
+/*Set value box themes*/
+.bg-vb-red {
+  color: #ffffff;
+  background-color: #de5a79;
+  border-color: #ffffff;
+}
+
+.bg-vb-blue {
+  color: #ffffff;
+  background-color: #003f5c;
+  border-color: #ffffff;
+}
+
+.bg-vb-yellow {
+  color: #ffffff;
+  background-color: #ffa600;
+  border-color: #ffffff;
+}
+
+.card-header {
+  background-color: #ffffff;
+}
+
+div.intro.html-fill-itme.html-fill-container .card {
+    --bs-card-spacer-y: 0 !important;
+    --bs-card-spacer-x: 0 !important;
+    --bs-card-border-color: "transparent" !important;
+}
+
+.girafe_container_std  {
+    height: 100%;
+    width: 100%;
+    position: relative; 
+    margin-left: 10px; /* Adjust the value as needed for the left margin */
+    margin-right: 10px; /* Adjust the value as needed for the right margin */
+}
+
+.card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); // Add a subtle box shadow
+  font-family: 'Merriweather', sans-serif;
+  font-style: normal; // Adjust the style as needed (normal, italic, etc.)
+}
+
+/*.container-fluid.crosstalk-bscols {
+    margin-left: 0px;
+    margin-right: 0px;
+    white-space: normal;
+}*/
+
+$navbar-bg: #58508d;
+$navbar-fg: #F0F0F0;
+

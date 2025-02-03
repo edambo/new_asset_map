@@ -1,0 +1,148 @@
+```{r, include = FALSE}
+library(here)
+library(dplyr)
+library(flextable)
+library(officer)
+library(tidyr, include.only = "pivot_longer")
+library(stringr, include.only = "str_to_title")
+library(knitr)
+```
+
+
+```{r, include=FALSE}
+
+cat_data <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "program_categories") %>% 
+  select(c(program, main_category, sub_category))
+```
+
+```{r, include=FALSE}
+res_data <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "program_info") %>% 
+  left_join(., cat_data, by = "program") %>%
+  # Remove new line from subcategory text and add new lines to other variables
+  mutate(
+    sub_category = gsub("\r\n", "", sub_category),
+    program_description = gsub("\\\\n", "\n", program_description),
+    program_description = gsub("(?<!\n)~", "\n- ", program_description, perl=TRUE),
+    first_eligibility_and_referrals = gsub("\\\\n", "\n", first_eligibility_and_referrals),
+    first_eligibility_and_referrals = gsub("(?<!\n)~", "\n- ", first_eligibility_and_referrals, perl=TRUE)
+  )
+```
+
+
+```{r, echo = FALSE}
+# Filter behavioral health service rows
+bhs <- res_data %>% filter(main_category == "Behavioral Health Services") %>% 
+  pivot_longer(!program, names_to = "items", values_to = "values") %>%
+  # Format item names
+  mutate(
+    items = case_when(
+      items == "program"                         ~ "Program",
+      items == "main_category"                   ~ "Need Category",
+      items == "program_description"             ~ "Program Description",
+      items == "hours"                           ~ "Hours",
+      items == "address"                         ~ "Address",
+      items == "phone"                           ~ "Phone",
+      items == "website"                         ~ "Website",
+      items == "first_eligibility_and_referrals" ~ "First Eligibility & Referrals",
+      items == "cost_to_participant"             ~ "Cost to Participant",
+      items == "sub_category"                    ~ "Subcategory",
+      items == "agency"                          ~ "Agency" 
+    )
+  )
+```
+
+
+```{r, echo = FALSE}
+# Split data frame into list of data frames by variable
+bhs_table_list <- split(bhs, bhs$program)
+```
+
+```{r, include=FALSE}
+bhs_progs <- names(bhs_table_list)
+```
+
+
+<!-- ## Create Flextables -->
+
+## Behavioral Health Services
+
+```{r, include = FALSE}
+asset_flextable <- function(program_name, table_list = bhs_table_list) {
+  
+  # Extract each variable data frame from list 
+  df <- data.frame(table_list[[program_name]])
+  
+  # Set link text
+  link <- df["values"][df["items"] == "Website"]
+  
+  # Set up table header line text to include the program name
+  title_cap <- as_paragraph(program_name, "\n")
+    
+    # Create flextable
+    flex_tab <- flextable(df, col_keys = c("items", "values")) %>%
+      # Delete Header
+      delete_part(part = "header") %>%
+      
+      # Format Header line
+      add_header_lines(title_cap) %>%
+      bg(bg = "transparent", part = "header") %>%
+      align(align = "left", part = "header") %>%
+      fontsize(size = 14, part = "header") %>%
+      font(fontname = "Merriweather", part = "header") %>%
+      bold(part = "header") %>%
+      color(part = "header", color = "#999999") %>%
+      
+      # Remove border
+      border_remove() %>%
+      
+      # Make items bold and set font
+      bold(j = 1) %>%
+      font(fontname = "Merriweather") %>%
+      
+      # Set width, alignment and font
+      width(j = c(1,2), width = c(2,10), unit = "in") %>%
+      align(align = "left", part = "all") %>%
+      valign(valign = "top") %>%
+      line_spacing(space = 1.5, part = "all") %>%
+    
+      # Format and make links clickable
+      compose(i = 6, j = 2, 
+              value = as_paragraph(hyperlink_text(x = link, url = link))) %>%
+      #color(i = 6, j = 2, color = "#0000EE") %>%
+      
+      # Add space and border at the bottom
+      add_footer_lines("") %>%
+      add_footer_lines("") %>%
+      hline(i = 1, part = "footer", border = fp_border(color = "gray"))
+      
+    
+    flex_tab
+}
+```
+
+```{r, results ='asis', echo=FALSE}
+flextables <- lapply(bhs_progs, asset_flextable)
+
+for (x in 1:length(bhs_progs)) {
+  cat(knit_print(flextables[[x]]))
+  }
+
+```
+
+
+<!-- ```{r, include=FALSE} -->
+<!-- asset_flextable("15th Street Hospital and Jail Diversion Program") -->
+
+<!-- # bhs_progs -->
+
+<!-- # df  <- data.frame(bhs_table_list[["Crisis Intervention Team (CIT): APD"]])  -->
+
+
+<!-- df["values"][df["items"] == "Program Description"] -->
+<!-- ``` -->
+
+
+
+
+
+

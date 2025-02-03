@@ -1,0 +1,19 @@
+{
+  "hash": "0557ca021e8b5460b80977ab50ffd7d3",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"About\"\nformat: \n  dashboard:\n    embed-resources: true\nfig-height: 6\nfig-width: 8\n---\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Row \n\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"leaflet html-widget html-fill-item\" id=\"htmlwidget-8899a0c6d50b3b8f23a1\" style=\"width:100%;height:487px;\"></div>\n<script type=\"application/json\" data-for=\"htmlwidget-8899a0c6d50b3b8f23a1\">{\"x\":{\"options\":{\"crs\":{\"crsClass\":\"L.CRS.EPSG3857\",\"code\":null,\"proj4def\":null,\"projectedBounds\":null,\"options\":{}}},\"calls\":[{\"method\":\"addProviderTiles\",\"args\":[\"CartoDB.Positron\",null,null,{\"errorTileUrl\":\"\",\"noWrap\":false,\"detectRetina\":false}]},{\"method\":\"addMarkers\",\"args\":[[30.27,30.26980612614838,30.24,30.24,30.24,30.24,30.24,30.24,30.24,30.24,30.24,30.24],[-97.73999999999999,-97.73965108465788,-97.75,-97.75,-97.75,-97.75,-97.75,-97.75,-97.75,-97.75,-97.75,-97.75],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},[\"78701\",\"78767\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\"],null,null,null,[\"78701\",\"78767\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\",\"78704\"],{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}],\"limits\":{\"lat\":[30.24,30.27],\"lng\":[-97.75,-97.73965108465788]}},\"evals\":[],\"jsHooks\":[]}</script>\n```\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../site_libs/htmltools-fill-0.5.8.1/fill.css\" rel=\"stylesheet\" />\n<script src=\"../site_libs/htmlwidgets-1.6.4/htmlwidgets.js\"></script>\n<script src=\"../site_libs/jquery-3.6.0/jquery-3.6.0.min.js\"></script>\n<link href=\"../site_libs/leaflet-1.3.1/leaflet.css\" rel=\"stylesheet\" />\n<script src=\"../site_libs/leaflet-1.3.1/leaflet.js\"></script>\n<link href=\"../site_libs/leafletfix-1.0.0/leafletfix.css\" rel=\"stylesheet\" />\n<script src=\"../site_libs/proj4-2.6.2/proj4.min.js\"></script>\n<script src=\"../site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js\"></script>\n<link href=\"../site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css\" rel=\"stylesheet\" />\n<script src=\"../site_libs/leaflet-binding-2.2.2/leaflet.js\"></script>\n<script src=\"../site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js\"></script>\n<script src=\"../site_libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

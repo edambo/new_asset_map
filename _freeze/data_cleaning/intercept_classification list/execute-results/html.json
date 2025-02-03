@@ -1,0 +1,15 @@
+{
+  "hash": "9a2dbe9ef47c035777da5a77da8b1751",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n## Community corrections\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncomm_corr_keywords <- c(\"community correction\", \"community supervision\",\n                        \"probation\", \"parole\")\n```\n:::\n\n\nRe-entry will include all main categories besides legal aid and legal diversion.\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

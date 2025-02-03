@@ -1,0 +1,186 @@
+---
+toc: true
+---
+# Tables
+Below are demographic values for each program.
+
+```{r, include = FALSE}
+library(here)
+library(dplyr)
+library(flextable)
+library(officer)
+library(tidyr, include.only = "pivot_longer")
+library(stringr, include.only = "str_to_title")
+library(htmltools)
+library(knitr)
+library(expss, include.only = "apply_labels")
+```
+
+```{r, include=FALSE}
+source(here::here("R", "add_labels.R"))
+```
+
+```{r, include=FALSE}
+cat_data <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "program_categories") %>% 
+  select(c(program, main_category, sub_category))
+```
+
+```{r, include=FALSE}
+dem_data <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "demographics") %>% 
+  left_join(., cat_data, by = "program") %>% 
+# Format percentage data
+mutate(
+  across(
+    .cols = c(starts_with("fy") & !ends_with("_raw")),
+    .fns = ~case_when(
+      !is.na(.x) ~ paste0(as.character(.x), "%"),
+      TRUE       ~ as.character(.x)
+    )
+  ),
+  demo_notes = case_when(
+    is.na(demo_notes) ~ "No additional notes.",
+    TRUE              ~ demo_notes
+  ),
+  demo_cat = case_when(
+    is.na(demo_cat) ~ "Non-specified Demographics",
+    TRUE            ~ demo_cat
+  )
+)
+```
+
+```{r, include = FALSE}
+dem_labels <- readxl::read_xlsx(here::here("data", "community_resources_map_data.xlsx"), sheet = "column_labels")
+```
+
+```{r, include=FALSE, warning=FALSE}
+# Get labels in proper format for set_header_labels function
+list_col_lab <- function(df, col_keys){
+  labels <-  c()
+  for(col in col_keys){
+    label <- attr(df[[col]], "label")
+    labels <- append(labels, label)
+  }
+  names(labels) <- col_keys
+  
+  labels
+}
+```
+
+```{r, include = FALSE, warning=FALSE}
+# Function for creating flextables
+demo_flex <- function(i, grouped_df_list){
+  grouped_df <- grouped_df_list[[i]]
+  
+  # Add labels to df
+  grouped_df <- add_labs(dem_labels, grouped_df)
+
+  # Set up table header and footer line text to include the program name, main category, subcategory and demographic sub category
+  pn_cap <- as_paragraph(grouped_df[["program"]][1], 
+                         "\n")
+  dsc_cap <- as_paragraph(grouped_df[["demo_cat"]][1], 
+                          "\n")
+  note_cap <- as_paragraph("Notes:\n", grouped_df[["demo_notes"]][1], 
+                          "\n")
+  # Get demographic name that with replace "category"
+  demo_name <- grouped_df[["demographic"]][1]
+  
+  # Select data columns to show in the flextable
+  col_keys <- grouped_df %>% select(c("category", starts_with("fy"))) %>% names() 
+  
+  # Create header labels
+  col_labs <- list_col_lab(grouped_df, col_keys)
+  
+  # Create flextable
+  flex_tab <- flextable(grouped_df, col_keys = col_keys) %>%
+    # Remove border
+    border_remove() %>%
+    
+    set_header_labels(values = col_labs) %>%
+    # Replace "Category" header label with actual name of category
+    set_header_labels(category = demo_name) %>%
+    # Format Header lines
+    add_header_lines(dsc_cap) %>%
+    bold(part = "header") %>%
+    color(i = 1, part = "header", color = "#999999") %>%
+    hline(part = "header", border = fp_border(color = "gray")) %>%
+    
+    # Make items bold and set font
+    bold(j = 1) %>%
+    font(fontname = "Merriweather") %>%
+    
+    # Set width, alignment and font
+    width(width = 1.4, unit = "in") %>%
+    align(align = "left", part = "all") %>%
+    
+    # Format footer lines
+    add_footer_lines(note_cap) %>%
+    hline_top(part = "footer", border = fp_border(color = "gray")) %>%
+    # Add space and border at the bottom
+    add_footer_lines("") %>%
+    hline(i = 1, part = "footer", border = fp_border(color = "gray"))
+  
+  flex_tab
+  }
+```
+
+```{r, include=FALSE}
+# Create list of program names
+program_names <- dem_data[["program"]]
+
+# Create a function that takes a program name as an argument
+program_flex <- function(program_name){
+  # Get the main and sub-categories for each program
+  main_cat <- dem_data["main_category"][dem_data["program"] == program_name][1]
+  sub_cat <- dem_data["sub_category"][dem_data["program"] == program_name][1]
+  
+  p_grouped <- dem_data %>% filter(program == program_name) %>%
+  # Group rows
+  group_by(program, demo_cat, demographic)
+
+  # Split data frame into list of data frames by group
+  p_grouped_list <- group_split(p_grouped)
+    
+  # For each split group, remove empty columns
+  
+  # Initialize empty list to store dfs with empty columns removed
+  g_no_na <- list()
+  
+  for(df in p_grouped_list){
+    df_na <- df %>% select(
+      -c(where(~all(is.na(.))))
+    ) %>% list()
+    
+    # Iteratively add cleaned dfs to initialized list
+    g_no_na <- c(g_no_na, df_na)
+  }
+
+  # Create list of flextables
+  flex_tabs <- lapply(c(1:length(g_no_na)), demo_flex, grouped_df_list = g_no_na)
+  
+  # Print flextable list with header consisting of program name, main category 
+  # and subcategory
+  cat("\n")
+  cat("##", program_name, "\n") # Create 2nd level headings with the program name.
+  cat("######", main_cat, "\n")
+  cat("######", sub_cat, "\n")
+  
+  for (x in 1:length(flex_tabs)) {
+  cat(knit_print(flex_tabs[[x]]))
+  }
+  
+  cat("\n")
+}
+```
+
+
+```{r, results="asis", echo=FALSE, warning=FALSE}
+program_flex("Pretrial DWI Diversion Program")
+```
+
+
+
+
+
+
+
+

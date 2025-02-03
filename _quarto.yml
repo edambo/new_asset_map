@@ -1,0 +1,33 @@
+project:
+  type: website
+
+website:
+  title: "Asset Map"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: sections/asset_map_dashboards.qmd
+        text: Asset Map Dashboards
+      # - text: Demographics
+      #   menu: 
+      #     - href: sections/demographics_tables.qmd
+      #     - href: sections/demographics_dash.qmd
+      # - href: sections/resources.qmd
+      #   text: Resources
+      - href: sections/definitions.qmd
+        text: Category Definitions
+
+format:
+  html:
+    embed-resources: true
+    page-layout: full
+    theme: 
+    - sandstone
+    - assets/custom_style.css # custom formatting for value boxes
+    css: assets/custom_styles.css # custom formatting for value boxes
+    toc: false
+execute:
+  freeze: auto
+
+
